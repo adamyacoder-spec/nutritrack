@@ -1,0 +1,15 @@
+# Compiled Java class files
+**/*.class
+
+# JavaFX SDK (large binary, not needed in repo)
+lib/javafx-sdk-23.0.2/
+lib/javafx-sdk.zip
+
+# IDE files
+.idea/
+*.iml
+.vscode/
+
+# OS files
+Thumbs.db
+.DS_Store
