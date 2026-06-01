@@ -1,48 +1,57 @@
 package util;
 
-/**
- * CalorieCalculator - Calculates daily calorie needs using BMR formula.
- * 
- * Uses the Mifflin-St Jeor equation (most accurate BMR formula):
- * - Men:   BMR = 10 * weight(kg) + 6.25 * height(cm) - 5 * age - 161 + 166
- * - Women: BMR = 10 * weight(kg) + 6.25 * height(cm) - 5 * age - 161
- * 
- * Then adjusts based on the user's goal:
- * - "lose"     -> BMR - 500 calories (deficit)
- * - "gain"     -> BMR + 500 calories (surplus) 
- * - "maintain" -> BMR (no change)
- */
 public class CalorieCalculator {
 
-    /**
-     * Calculate recommended daily calories based on user data and goal.
-     *
-     * @param weight User's weight in kg
-     * @param height User's height in cm
-     * @param age    User's age in years
-     * @param gender "Male" or "Female"
-     * @param goal   "lose", "gain", or "maintain"
-     * @return Recommended daily calorie intake
-     */
-    public static double calculateCalories(double weight, double height, int age, String gender, String goal) {
+    public static double calculateCalories(double weight, double height, int age, String gender, String goal, String activityLevel) {
         double bmr;
 
-        // Calculate BMR based on gender
-        if (gender.equalsIgnoreCase("Male")) {
-            bmr = 10 * weight + 6.25 * height - 5 * age + 5;
+        // Mifflin-St Jeor BMR calculation
+        if (gender != null && gender.equalsIgnoreCase("Male")) {
+            bmr = 10.0 * weight + 6.25 * height - 5.0 * age + 5.0;
         } else {
-            bmr = 10 * weight + 6.25 * height - 5 * age - 161;
+            bmr = 10.0 * weight + 6.25 * height - 5.0 * age - 161.0;
         }
 
-        // Adjust BMR based on goal
-        switch (goal.toLowerCase()) {
-            case "lose":
-                return bmr - 500;
-            case "gain":
-                return bmr + 500;
-            case "maintain":
-            default:
-                return bmr;
+        // Apply activity level factor
+        double activityFactor = 1.2; // default to Sedentary
+        if (activityLevel != null) {
+            switch (activityLevel.toLowerCase()) {
+                case "lightly active":
+                case "lightly_active":
+                    activityFactor = 1.375;
+                    break;
+                case "moderately active":
+                case "moderately_active":
+                    activityFactor = 1.55;
+                    break;
+                case "very active":
+                case "very_active":
+                    activityFactor = 1.725;
+                    break;
+                case "sedentary":
+                default:
+                    activityFactor = 1.2;
+                    break;
+            }
         }
+
+        double tdee = bmr * activityFactor;
+
+        // Adjust for goal
+        double offset = 0;
+        if (goal != null) {
+            String lowerGoal = goal.toLowerCase();
+            if (lowerGoal.contains("lose") && lowerGoal.contains("aggressive")) {
+                offset = -700.0;
+            } else if (lowerGoal.contains("lose")) {
+                offset = -350.0;
+            } else if (lowerGoal.contains("muscle") || (lowerGoal.contains("gain") && lowerGoal.contains("lean"))) {
+                offset = 300.0;
+            } else if (lowerGoal.contains("gain")) {
+                offset = 500.0;
+            }
+        }
+
+        return Math.max(1200.0, tdee + offset); // set a safe minimum floor of 1200 kcal
     }
 }
