@@ -7,9 +7,35 @@ A modern Java application that tracks users, food items, and daily meals using M
 ## Key Features
 
 - **Portion Conversions**: Add food items and track consumption in **Grams (g)**, **Cups**, or **Pieces/Units**. The system automatically handles portion-to-weight conversions using calibrated serving weights.
+
 - **Date-Based Persistence**: Track and store meals across multiple/previous days. The Daily Tracker loads and persists slot records (Breakfast, Lunch, etc.) directly in the database by date.
+
 - **Humanized Goals**: Calorie needs are calculated using the Mifflin-St Jeor formula scaled by **Activity Levels** (Sedentary to Very Active) and adjusted for **Realistic Goals** (Healthy Deficit, Aggressive Deficit, Lean Bulk, Active Surplus, Maintenance).
+
 - **Premium GUI**: A polished JavaFX dashboard styled using an external modern CSS sheet (`style.css`) featuring a custom emerald theme, cards with subtle drop-shadows, dynamic focus states, and a **Live Nutrition Preview** as you type portions.
+
+---
+
+## Application Preview
+
+### 🎥 Demo Walkthrough
+Watch a video walkthrough of the app's functionality:
+
+<video src="images/demo_walkthrough.mp4" controls width="100%"></video>
+
+### 📸 Screenshots
+
+| 🏠 Home Dashboard | 👤 Profile & Goals |
+|---|---|
+| ![Home Dashboard](images/home_dashboard.png) | ![Profile & Goals](images/profile_goals.png) |
+
+| 🍳 Daily Tracker (Breakfast) | 🥪 Daily Tracker (Lunch) |
+|---|---|
+| ![Daily Tracker Breakfast](images/tracker_breakfast.png) | ![Daily Tracker Lunch](images/tracker_lunch.png) |
+
+| 🍲 Daily Tracker (Dinner) | 📊 Daily Summary & Progress |
+|---|---|
+| ![Daily Tracker Dinner](images/tracker_dinner.png) | ![Daily Summary](images/tracker_summary.png) |
 
 ---
 
@@ -25,6 +51,7 @@ A modern Java application that tracks users, food items, and daily meals using M
     ├── sql/
     │   └── schema.sql      creates tables and seeds default food items
     ├── lib/                MySQL Connector/J and JavaFX SDK JARs
+    ├── images/             Screenshots and demo video of the application
     └── README.md
 
 ---
