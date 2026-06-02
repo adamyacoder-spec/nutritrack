@@ -6,10 +6,10 @@ A high-performance, modern Java desktop application designed to track users, foo
 
 ## 🛠️ Technology Stack & Badges
 
-![Java Version](https://img.shields.co/badge/Java-17%2B-orange?style=for-the-badge&logo=openjdk)
-![MySQL](https://img.shields.co/badge/MySQL-9.7%2B-blue?style=for-the-badge&logo=mysql)
-![JavaFX](https://img.shields.co/badge/JavaFX-23-green?style=for-the-badge&logo=java)
-![License](https://img.shields.co/badge/License-MIT-yellow?style=for-the-badge)
+![Java Version](https://img.shields.io/badge/Java-17%2B-orange?style=for-the-badge&logo=openjdk)
+![MySQL](https://img.shields.io/badge/MySQL-9.7%2B-blue?style=for-the-badge&logo=mysql)
+![JavaFX](https://img.shields.io/badge/JavaFX-23-green?style=for-the-badge&logo=java)
+![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)
 
 - **Frontend**: JavaFX (Styled using modern external CSS sheet `style.css` with a custom emerald glassmorphism theme)
 - **Backend**: Core Java (OOP, multi-class structures, custom algorithms)
