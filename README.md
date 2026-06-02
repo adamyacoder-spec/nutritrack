@@ -1,29 +1,39 @@
-# NutriTrack
+# 🥗 NutriTrack
 
-A modern Java application that tracks users, food items, and daily meals using MySQL. It features a console demo and a fully styled JavaFX dashboard.
-
----
-
-## Key Features
-
-- **Portion Conversions**: Add food items and track consumption in **Grams (g)**, **Cups**, or **Pieces/Units**. The system automatically handles portion-to-weight conversions using calibrated serving weights.
-
-- **Date-Based Persistence**: Track and store meals across multiple/previous days. The Daily Tracker loads and persists slot records (Breakfast, Lunch, etc.) directly in the database by date.
-
-- **Humanized Goals**: Calorie needs are calculated using the Mifflin-St Jeor formula scaled by **Activity Levels** (Sedentary to Very Active) and adjusted for **Realistic Goals** (Healthy Deficit, Aggressive Deficit, Lean Bulk, Active Surplus, Maintenance).
-
-- **Premium GUI**: A polished JavaFX dashboard styled using an external modern CSS sheet (`style.css`) featuring a custom emerald theme, cards with subtle drop-shadows, dynamic focus states, and a **Live Nutrition Preview** as you type portions.
+A high-performance, modern Java desktop application designed to track users, food items, and daily calorie intake. Built with a robust **JavaFX** dashboard, integrated with a **MySQL** database, and structured using the **DAO (Data Access Object)** design pattern. 
 
 ---
 
-## Application Preview
+## 🛠️ Technology Stack & Badges
 
-### 🎥 Demo Walkthrough
+![Java Version](https://img.shields.co/badge/Java-17%2B-orange?style=for-the-badge&logo=openjdk)
+![MySQL](https://img.shields.co/badge/MySQL-9.7%2B-blue?style=for-the-badge&logo=mysql)
+![JavaFX](https://img.shields.co/badge/JavaFX-23-green?style=for-the-badge&logo=java)
+![License](https://img.shields.co/badge/License-MIT-yellow?style=for-the-badge)
+
+- **Frontend**: JavaFX (Styled using modern external CSS sheet `style.css` with a custom emerald glassmorphism theme)
+- **Backend**: Core Java (OOP, multi-class structures, custom algorithms)
+- **Database**: MySQL (JDBC API for relational persistence and date-based tracking)
+
+---
+
+## 🚀 Key Features
+
+*   **⚖️ Portion Conversions**: Add food items and track consumption in **Grams (g)**, **Cups**, or **Pieces/Units**. Handles automated portion-to-weight conversions using calibrated serving weights.
+*   **📅 Date-Based Persistence**: Track and store meals across multiple/previous days. The Daily Tracker loads and persists slot records (Breakfast, Lunch, Dinner, Snacks) directly in the database by date.
+*   **🧠 Humanized Goals & Calculations**: Calculates BMR and calorie needs using the **Mifflin-St Jeor formula**, scaled by **Activity Levels** (Sedentary to Very Active) and adjusted for **Realistic Goals** (Healthy Deficit, Aggressive Deficit, Lean Bulk, Active Surplus, Maintenance).
+*   **🎨 Premium GUI Dashboard**: Clean JavaFX layout featuring dynamic focus states, responsive cards with drop-shadows, and a **Live Nutrition Preview** as you type portion sizes.
+
+---
+
+## 🎥 Application Preview & Screenshots
+
+### Demo Walkthrough
 Watch a video walkthrough of the app's functionality:
 
 <video src="images/demo_walkthrough.mp4" controls width="100%"></video>
 
-### 📸 Screenshots
+### Screenshots
 
 | 🏠 Home Dashboard | 👤 Profile & Goals |
 |---|---|
@@ -39,58 +49,83 @@ Watch a video walkthrough of the app's functionality:
 
 ---
 
-## Project Structure
+## 🏛️ Architecture & Database Design
+
+### Design Patterns
+This project adheres to professional software engineering practices:
+- **DAO Pattern (Data Access Object)**: Separates business logic from persistence. Database operations for `User`, `FoodItem`, and `Meal` are handled in dedicated classes within the `dao` package.
+- **Model-View Separation**: JavaFX frontend classes (in the `view` package) are separated from the database query execution and data representation (in `model` and `dao` packages).
+
+### Database Schema Structure
+The schema is designed to support relations between users, food items, and date-based logged meals:
+1.  **`users`**: Stores profile information (weight, height, age, gender, activity level, and target goals).
+2.  **`food_items`**: Contains default and user-defined food items with standard nutrition profiles per serving weight.
+3.  **`meals`**: Tracks portion size, slot (Breakfast, Lunch, etc.), and the date of consumption, mapped to a specific `user_id` and `food_item_id`.
+
+---
+
+## 📁 Project Directory Structure
 
     nutritrack/
     ├── src/
-    │   ├── model/          User, FoodItem, Meal (plain data classes & nested items)
-    │   ├── dao/            UserDAO, FoodItemDAO, MealDAO (database queries)
-    │   ├── util/           DatabaseUtil (connection helper), CalorieCalculator
-    │   ├── view/           Dashboard (styled JavaFX GUI), style.css (theme sheet)
-    │   └── Main.java       console demo entry point
+    │   ├── model/          User, FoodItem, Meal (Plain Old Java Objects - POJOs)
+    │   ├── dao/            UserDAO, FoodItemDAO, MealDAO (Database persistence layers)
+    │   ├── util/           DatabaseUtil (Connection pooling), CalorieCalculator (Algorithms)
+    │   ├── view/           Dashboard (Styled JavaFX GUI), style.css (Emerald theme sheet)
+    │   └── Main.java       Console-based application demo entry point
     ├── sql/
-    │   └── schema.sql      creates tables and seeds default food items
-    ├── lib/                MySQL Connector/J and JavaFX SDK JARs
+    │   └── schema.sql      Database schema generation script and default seeds
+    ├── lib/                MySQL Connector/J and JavaFX SDK binaries (git-ignored)
     ├── images/             Screenshots and demo video of the application
-    └── README.md
+    ├── LICENSE             MIT License details
+    └── README.md           Project documentation
 
 ---
 
-## Prerequisites
-- Java 17 or newer (tested on Java 25)
-- MySQL 9.7 (or compatible) running on port 3307 with an empty root password
-- MySQL Connector/J JAR in the `lib/` folder
-- JavaFX SDK in the `lib/` folder (for the GUI)
+## ⚙️ Prerequisites & Setup
 
----
-
-## Setup & Run
+### Prerequisites
+- **Java Development Kit (JDK)**: Version 17 or higher
+- **MySQL Server**: Running on port `3307` with root password empty (configured in `DatabaseUtil.java`)
+- **JavaFX SDK & MySQL Connector/J**: Placed inside the `lib/` directory
 
 ### 1. Database Setup
-Ensure MySQL is running on port 3307 and run the schema initialization script:
+Start your MySQL server on port `3307` and initialize the schema:
 ```powershell
 Get-Content sql/schema.sql -Raw | mysql -u root --port=3307
 ```
 
 ### 2. Compilation
-Compile the project (excluding the deleted controller package):
+Compile all Java source files:
 ```powershell
 javac --module-path "lib\javafx-sdk-23.0.2\lib" --add-modules javafx.controls -cp "src;lib\mysql-connector-j-8.4.0.jar" src\Main.java src\model\*.java src\view\*.java src\dao\*.java src\util\*.java
 ```
 
-### 3. Run Console Demo
-Run the console application to test database inserts, calculation logic, and macro scaling:
-```powershell
-java -cp "src;lib\mysql-connector-j-8.4.0.jar" Main
-```
+### 3. Running the App
 
-### 4. Run GUI Dashboard
-Launch the styled JavaFX dashboard on your screen:
-```powershell
-java --module-path "lib\javafx-sdk-23.0.2\lib" --add-modules javafx.controls -cp "src;lib\mysql-connector-j-8.4.0.jar" view.Dashboard
-```
+*   **To run the Console Demo:**
+    ```powershell
+    java -cp "src;lib\mysql-connector-j-8.4.0.jar" Main
+    ```
+*   **To run the JavaFX GUI Dashboard:**
+    ```powershell
+    java --module-path "lib\javafx-sdk-23.0.2\lib" --add-modules javafx.controls -cp "src;lib\mysql-connector-j-8.4.0.jar" view.Dashboard
+    ```
 
 ---
 
-## License
-MIT License - feel free to use, modify, and share.
+## 🔮 Future Roadmap
+- [ ] **Interactive Progress Charts**: Visual graphs (bar charts, line graphs) mapping calorie trends over time.
+- [ ] **Custom Recipe Builder**: Allow users to combine food items into single reusable recipes.
+- [ ] **Export to PDF**: Generate structured weekly or monthly nutrition reports.
+
+---
+
+## 📄 License
+Distributed under the MIT License. See [LICENSE](LICENSE) for more details.
+
+---
+
+## 🤝 Connect with Me
+- **GitHub**: [@adamyacoder-spec](https://github.com/adamyacoder-spec)
+- **LinkedIn**: [Your LinkedIn Profile URL](https://linkedin.com/in/your-profile-url) *(Update with your link!)*
