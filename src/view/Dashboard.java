@@ -7,6 +7,9 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import dao.UserDAO;
 import dao.FoodItemDAO;
@@ -111,6 +114,8 @@ public class Dashboard extends Application {
         return vbox;
     }
 
+    private TableView<User> userTable = new TableView<>();
+
     private VBox createUserPane() {
         VBox vbox = new VBox(15);
         vbox.setPadding(new Insets(25));
@@ -177,10 +182,43 @@ public class Dashboard extends Application {
         Label statusLabel = new Label("");
         Label calorieLabel = new Label("");
 
-        TextArea userListArea = new TextArea();
-        userListArea.setEditable(false);
-        userListArea.setPrefHeight(150);
-        refreshUserList(userListArea);
+        // Create TableView Columns
+        TableColumn<User, Integer> idCol = new TableColumn<>("ID");
+        idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+        idCol.setPrefWidth(50);
+
+        TableColumn<User, String> nameCol = new TableColumn<>("Name");
+        nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        nameCol.setPrefWidth(150);
+
+        TableColumn<User, Integer> ageCol = new TableColumn<>("Age");
+        ageCol.setCellValueFactory(new PropertyValueFactory<>("age"));
+        ageCol.setPrefWidth(50);
+
+        TableColumn<User, String> genderCol = new TableColumn<>("Gender");
+        genderCol.setCellValueFactory(new PropertyValueFactory<>("gender"));
+        genderCol.setPrefWidth(80);
+
+        TableColumn<User, Double> weightCol = new TableColumn<>("Weight (kg)");
+        weightCol.setCellValueFactory(new PropertyValueFactory<>("weight"));
+        weightCol.setPrefWidth(90);
+
+        TableColumn<User, Double> heightCol = new TableColumn<>("Height (cm)");
+        heightCol.setCellValueFactory(new PropertyValueFactory<>("height"));
+        heightCol.setPrefWidth(90);
+
+        TableColumn<User, String> goalCol = new TableColumn<>("Goal");
+        goalCol.setCellValueFactory(new PropertyValueFactory<>("goal"));
+        goalCol.setPrefWidth(200);
+
+        TableColumn<User, String> activityCol = new TableColumn<>("Activity");
+        activityCol.setCellValueFactory(new PropertyValueFactory<>("activityLevel"));
+        activityCol.setPrefWidth(150);
+
+        userTable.getColumns().clear();
+        userTable.getColumns().addAll(idCol, nameCol, ageCol, genderCol, weightCol, heightCol, goalCol, activityCol);
+        userTable.setPrefHeight(200);
+        refreshUserTable();
 
         addBtn.setOnAction(e -> {
             try {
@@ -205,7 +243,7 @@ public class Dashboard extends Application {
                     statusLabel.setText("Success! User registered with ID: " + id);
                     statusLabel.getStyleClass().setAll("status-success");
                     nameField.clear(); ageField.clear(); weightField.clear(); heightField.clear();
-                    refreshUserList(userListArea);
+                    refreshUserTable();
                 } else {
                     statusLabel.setText("Failed to save user.");
                     statusLabel.getStyleClass().setAll("status-error");
@@ -239,25 +277,17 @@ public class Dashboard extends Application {
         Label listHeading = new Label("Registered User Profiles");
         listHeading.getStyleClass().add("section-heading");
 
-        vbox.getChildren().addAll(formCard, listHeading, userListArea);
+        vbox.getChildren().addAll(formCard, listHeading, userTable);
         return vbox;
     }
 
-    private void refreshUserList(TextArea area) {
-        StringBuilder sb = new StringBuilder();
+    private void refreshUserTable() {
         ArrayList<User> users = userDAO.getAllUsers();
-        if (users.isEmpty()) {
-            sb.append("No user profiles created yet.");
-        } else {
-            sb.append(String.format("%-4s %-20s %-5s %-8s %-8s %-8s %-25s %-15s\n", "ID", "Name", "Age", "Gender", "Weight", "Height", "Goal", "Activity"));
-            sb.append("-".repeat(95)).append("\n");
-            for (User u : users) {
-                sb.append(String.format("%-4d %-20s %-5d %-8s %-8.1f %-8.1f %-25s %-15s\n",
-                    u.getId(), u.getName(), u.getAge(), u.getGender(), u.getWeight(), u.getHeight(), u.getGoal(), u.getActivityLevel()));
-            }
-        }
-        area.setText(sb.toString());
+        ObservableList<User> data = FXCollections.observableArrayList(users);
+        userTable.setItems(data);
     }
+
+    private TableView<FoodItem> foodTable = new TableView<>();
 
     private VBox createFoodPane() {
         VBox vbox = new VBox(15);
@@ -314,10 +344,43 @@ public class Dashboard extends Application {
         Button showAllBtn = new Button("Show All");
         showAllBtn.getStyleClass().add("btn-secondary");
 
-        TextArea foodListArea = new TextArea();
-        foodListArea.setEditable(false);
-        foodListArea.setPrefHeight(180);
-        refreshFoodList(foodListArea, null);
+        // Table setup
+        TableColumn<FoodItem, Integer> idCol = new TableColumn<>("ID");
+        idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+        idCol.setPrefWidth(50);
+
+        TableColumn<FoodItem, String> nameCol = new TableColumn<>("Name");
+        nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        nameCol.setPrefWidth(180);
+
+        TableColumn<FoodItem, Integer> calCol = new TableColumn<>("Calories/100g");
+        calCol.setCellValueFactory(new PropertyValueFactory<>("caloriesPer100g"));
+        calCol.setPrefWidth(110);
+
+        TableColumn<FoodItem, Double> protCol = new TableColumn<>("Protein/100g");
+        protCol.setCellValueFactory(new PropertyValueFactory<>("proteinPer100g"));
+        protCol.setPrefWidth(100);
+
+        TableColumn<FoodItem, Double> carbCol = new TableColumn<>("Carbs/100g");
+        carbCol.setCellValueFactory(new PropertyValueFactory<>("carbsPer100g"));
+        carbCol.setPrefWidth(100);
+
+        TableColumn<FoodItem, Double> fatCol = new TableColumn<>("Fats/100g");
+        fatCol.setCellValueFactory(new PropertyValueFactory<>("fatsPer100g"));
+        fatCol.setPrefWidth(100);
+
+        TableColumn<FoodItem, Double> cupCol = new TableColumn<>("Cup Wt (g)");
+        cupCol.setCellValueFactory(new PropertyValueFactory<>("weightPerCup"));
+        cupCol.setPrefWidth(90);
+
+        TableColumn<FoodItem, Double> unitCol = new TableColumn<>("Piece Wt (g)");
+        unitCol.setCellValueFactory(new PropertyValueFactory<>("weightPerUnit"));
+        unitCol.setPrefWidth(90);
+
+        foodTable.getColumns().clear();
+        foodTable.getColumns().addAll(idCol, nameCol, calCol, protCol, carbCol, fatCol, cupCol, unitCol);
+        foodTable.setPrefHeight(220);
+        refreshFoodTable(null);
 
         addFoodBtn.setOnAction(e -> {
             try {
@@ -343,7 +406,7 @@ public class Dashboard extends Application {
                     foodNameField.clear(); calField.clear(); proteinField.clear();
                     carbsField.clear(); fatsField.clear(); cupField.setText("0"); unitField.setText("0");
                     reloadCachedFoods();
-                    refreshFoodList(foodListArea, null);
+                    refreshFoodTable(null);
                 }
             } catch (NumberFormatException ex) {
                 foodStatus.setText("Please enter valid numeric fields.");
@@ -353,36 +416,24 @@ public class Dashboard extends Application {
 
         searchBtn.setOnAction(e -> {
             String q = searchField.getText().trim();
-            if (!q.isEmpty()) refreshFoodList(foodListArea, q);
+            if (!q.isEmpty()) refreshFoodTable(q);
         });
 
-        showAllBtn.setOnAction(e -> { searchField.clear(); refreshFoodList(foodListArea, null); });
+        showAllBtn.setOnAction(e -> { searchField.clear(); refreshFoodTable(null); });
 
         formCard.getChildren().addAll(heading, form, addFoodBtn, foodStatus);
 
-        VBox searchBox = new VBox(8, new Label("Search Food Database:"), new HBox(10, searchField, searchBtn, showAllBtn), foodListArea);
+        VBox searchBox = new VBox(8, new Label("Search Food Database:"), new HBox(10, searchField, searchBtn, showAllBtn), foodTable);
 
         vbox.getChildren().addAll(formCard, searchBox);
         return vbox;
     }
 
-    private void refreshFoodList(TextArea area, String query) {
-        StringBuilder sb = new StringBuilder();
+    private void refreshFoodTable(String query) {
         ArrayList<FoodItem> foods = (query != null && !query.isEmpty())
                 ? foodDAO.searchFoodByName(query) : foodDAO.getAllFoodItems();
-
-        if (foods.isEmpty()) {
-            sb.append("No matching food items found.");
-        } else {
-            sb.append(String.format("%-5s %-20s %-12s %-12s %-12s %-12s %-12s %-12s\n", 
-                "ID", "Name", "Cal/100g", "Protein/100g", "Carbs/100g", "Fats/100g", "Cup Wt(g)", "Piece Wt(g)"));
-            sb.append("-".repeat(95)).append("\n");
-            for (FoodItem f : foods) {
-                sb.append(String.format("%-5d %-20s %-12d %-12.1fg %-12.1fg %-12.1fg %-12.1fg %-12.1fg\n",
-                    f.getId(), f.getName(), f.getCaloriesPer100g(), f.getProteinPer100g(), f.getCarbsPer100g(), f.getFatsPer100g(), f.getWeightPerCup(), f.getWeightPerUnit()));
-            }
-        }
-        area.setText(sb.toString());
+        ObservableList<FoodItem> data = FXCollections.observableArrayList(foods);
+        foodTable.setItems(data);
     }
 
     private VBox createMealPane() {
