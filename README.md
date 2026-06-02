@@ -128,4 +128,4 @@ Distributed under the MIT License. See [LICENSE](LICENSE) for more details.
 
 ## 🤝 Connect with Me
 - **GitHub**: [@adamyacoder-spec](https://github.com/adamyacoder-spec)
-- **LinkedIn**: [Your LinkedIn Profile URL](https://linkedin.com/in/your-profile-url) *(Update with your link!)*
+- **LinkedIn**: [Adamya Vats](https://www.linkedin.com/in/adamya-vats-kd1983)
